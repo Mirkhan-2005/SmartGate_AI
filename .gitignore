@@ -1,0 +1,16 @@
+.venv/
+venv/
+venv311/
+__pycache__/
+.pytest_cache/
+*.pyc
+data/
+fotoPeserta/
+fcfolderr/
+imagesmehdi/
+database.pkl
+test.txt
+*.csv
+*.log
+.env
+*.json

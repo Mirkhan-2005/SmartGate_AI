@@ -1,0 +1,9 @@
+tensorflow==2.15.1
+numpy==1.26.4
+scipy==1.11.4
+protobuf==4.25.9
+opencv-python==4.10.0.84
+mtcnn==0.1.1
+keras-facenet==0.3.2
+customtkinter==5.2.2
+Pillow==10.4.0
