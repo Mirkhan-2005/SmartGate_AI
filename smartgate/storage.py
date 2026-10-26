@@ -39,7 +39,36 @@ class Storage:
                 CREATE INDEX IF NOT EXISTS idx_attendance_date
                     ON attendance(occurred_at DESC);
             """)
+        self._ensure_altyn_columns()
+    def _ensure_altyn_columns(self):
+        with self._conn() as db:
+            db.execute("BEGIN IMMEDIATE")
 
+            existing = {
+                row["name"]
+                for row in db.execute("PRAGMA table_info(users)")
+            }
+
+            additions = {
+                "altyn_student_id": "TEXT",
+                "altyn_photo_version": "TEXT",
+                "altyn_synced_at": "TEXT",
+            }
+
+            for name, definition in additions.items():
+                if name not in existing:
+                    db.execute(
+                        f'ALTER TABLE users ADD COLUMN "{name}" {definition}'
+                    )
+
+            db.execute(
+                """
+                CREATE UNIQUE INDEX IF NOT EXISTS
+                    idx_users_altyn_student_id
+                ON users(altyn_student_id)
+                WHERE altyn_student_id IS NOT NULL
+                """
+            )
     @contextmanager
     def _conn(self):
         db = sqlite3.connect(str(self.db_path), timeout=15)
